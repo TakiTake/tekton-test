@@ -1,13 +1,3 @@
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: hello-world-image
-spec:
-  type: image
-  params:
-  - name: url
-    value: takitake/hello-world-go
----
 # This demo modifies the cluster (deploys to it) you must use a service
 # account with permission to admin the cluster (or make your default user an admin
 # of the `default` namespace with default-cluster-admin.
@@ -36,6 +26,16 @@ spec:
   - name: url
     value: https://github.com/TakiTake/hello-world-go.git
 ---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: hello-world-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: takitake/hello-world-go
+---
 #Builds an image via kaniko and pushes it to registry.
 apiVersion: tekton.dev/v1alpha1
 kind: Task
@@ -44,15 +44,15 @@ metadata:
 spec:
   inputs:
     resources:
-    - name: hello-world
+    - name: app
       type: git
     params:
     - name: pathToDockerFile
       description: The path to the dockerfile to build
-      default: /workspace/hello-world/Dockerfile
+      default: /workspace/app/Dockerfile
     - name: pathToContext
       description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: /workspace/hello-world
+      default: /workspace/app
   outputs:
     resources:
     - name: builtImage
@@ -85,14 +85,14 @@ spec:
     type: manual
   inputs:
     resources:
-    - name: hello-world
+    - name: app
       resourceRef:
         name: hello-world-go-git
     params:
     - name: pathToDockerFile
-      value: /workspace/hello-world/Dockerfile
+      value: /workspace/app/Dockerfile
     - name: pathToContext
-      value: /workspace/hello-world
+      value: /workspace/app
   outputs:
     resources:
     - name: builtImage
