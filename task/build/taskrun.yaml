@@ -66,19 +66,13 @@ spec:
     - --dockerfile=${inputs.params.pathToDockerFile}
     - --destination=${outputs.resources.builtImage.url}
     - --context=${inputs.params.pathToContext}
-    volumeMounts:
-    - name: kaniko-secret
-      mountPath: /kaniko/.docker/
-  volumes:
-  - name: kaniko-secret
-    secret:
-      secretName: kaniko-secret
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
   name: build-push-run
 spec:
+  serviceAccount: build-bot
   taskRef:
     name: build-push-kaniko
   trigger:
