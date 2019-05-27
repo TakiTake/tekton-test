@@ -1,0 +1,42 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: nokogiri-src
+spec:
+  type: git
+  params:
+  - name: revision
+    value: master
+  - name: url
+    value: https://github.com/TakiTake/docker-rubyalpine-nokogiri.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: nokogiri-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: takitake/rubyalpine-nokogiri
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: build-push-nokogiri
+spec:
+  serviceAccount: build-bot
+  taskRef:
+    name: build-push-with-kaniko
+  trigger:
+    type: manual
+  inputs:
+    resources:
+    - name: app
+      resourceRef:
+        name: nokogiri-src
+  outputs:
+    resources:
+    - name: builtImage
+      resourceRef:
+        name: nokogiri-image

@@ -1,0 +1,33 @@
+# Builds an image via kaniko and pushes it to registry.
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: build-push-with-kaniko
+spec:
+  inputs:
+    resources:
+    - name: app
+      type: git
+    params:
+    - name: pathToDockerFile
+      description: The path to the dockerfile to build
+      default: /workspace/app/Dockerfile
+    - name: pathToContext
+      description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
+      default: /workspace/app
+    - name: versionTag
+      description: The tag name of the image
+      default: latest
+  outputs:
+    resources:
+    - name: builtImage
+      type: image
+  steps:
+  - name: build-and-push
+    image: gcr.io/kaniko-project/executor
+    command:
+    - /kaniko/executor
+    args:
+    - --dockerfile=${inputs.params.pathToDockerFile}
+    - --destination=${outputs.resources.builtImage.url}:${inputs.params.versionTag}
+    - --context=${inputs.params.pathToContext}
