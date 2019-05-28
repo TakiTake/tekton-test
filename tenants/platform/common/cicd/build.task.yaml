@@ -6,15 +6,15 @@ metadata:
 spec:
   inputs:
     resources:
-    - name: app
+    - name: app-src
       type: git
     params:
     - name: pathToDockerFile
       description: The path to the dockerfile to build
-      default: /workspace/app/Dockerfile
+      default: /workspace/app-src/Dockerfile
     - name: pathToContext
       description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: /workspace/app
+      default: /workspace/app-src
     - name: version
       description: The tag name of the image
       default: latest

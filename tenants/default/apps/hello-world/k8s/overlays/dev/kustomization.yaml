@@ -4,4 +4,4 @@ bases:
 - ../../base
 nameSuffix: -dev
 commonLabels:
-  app: hello-world-go-dev
+  app: hello-world-dev

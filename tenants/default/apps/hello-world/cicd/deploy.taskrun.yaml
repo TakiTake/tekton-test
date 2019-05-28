@@ -5,17 +5,17 @@ metadata:
 spec:
   type: git
   params:
-  - name: revision
-    value: feature/pipeline
   - name: url
     value: https://github.com/TakiTake/tekton-test.git
+  - name: revision
+    value: feature/pipeline
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
   name: deploy-hello-world
 spec:
-  serviceAccount: build-bot
+  serviceAccount: deploy-bot
   taskRef:
     name: deploy
   trigger:

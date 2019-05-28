@@ -1,0 +1,59 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: hello-world-src
+spec:
+  type: git
+  params:
+  - name: revision
+    value: master
+  - name: url
+    value: https://github.com/TakiTake/hello-world-go.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: hello-world-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: takitake/hello-world-go
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: tekton-test
+spec:
+  type: git
+  params:
+  - name: url
+    value: https://github.com/TakiTake/tekton-test.git
+  - name: revision
+    value: feature/pipeline
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: deploy
+spec:
+  serviceAccount: deploy-bot
+  pipelineRef:
+    name: deploy
+  params:
+  - name: tenant
+    value: default
+  - name: app
+    value: hello-world
+  - name: env
+    value: dev
+  resources:
+  - name: app-src
+    resourceRef:
+      name: hello-world-src
+  - name: app-image
+    resourceRef:
+      name: hello-world-image
+  - name: manifests
+    resourceRef:
+      name: tekton-test

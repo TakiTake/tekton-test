@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: hello-world-go
-  name: hello-world-go
+    app: hello-world
+  name: hello-world
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-world-go
+      app: hello-world
   template:
     metadata:
       labels:
-        app: hello-world-go
+        app: hello-world
     spec:
       containers:
       - image: takitake/hello-world-go
-        name: hello-world-go
+        name: hello-world

@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: deploy
+spec:
+  params:
+  - name: tenant
+  - name: app
+  - name: env
+  tasks:
+  - name: build-push-with-kaniko
+    taskRef:
+      name: build-push-with-kaniko
+  - name: deploy-to-k8s
+    taskRef:
+      name: deploy-to-k8s
+    runAfter:
+    - build-push-with-kaniko
+    params:
+    - name: tenant
+      value: "${params.tenant}"
+    - name: app
+      value: "${params.app}"
+    - name: env
+      value: "${params.env}"

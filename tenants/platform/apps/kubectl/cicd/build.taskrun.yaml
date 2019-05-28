@@ -25,7 +25,7 @@ kind: TaskRun
 metadata:
   name: build-push-kubectl
 spec:
-  serviceAccount: build-bot
+  serviceAccount: deploy-bot
   taskRef:
     name: build-push-with-kaniko
   trigger:
