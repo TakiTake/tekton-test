@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: tekton-test
+spec:
+  type: git
+  params:
+  - name: revision
+    value: feature/pipeline
+  - name: url
+    value: https://github.com/TakiTake/tekton-test.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: deploy-hello-world
+spec:
+  serviceAccount: build-bot
+  taskRef:
+    name: deploy
+  trigger:
+    type: manual
+  inputs:
+    resources:
+    - name: manifests
+      resourceRef:
+        name: tekton-test
+    params:
+    - name: tenant
+      value: default
+    - name: app
+      value: hello-world
+    - name: env
+      value: dev

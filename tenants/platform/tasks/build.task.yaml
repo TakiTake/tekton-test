@@ -15,7 +15,7 @@ spec:
     - name: pathToContext
       description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
       default: /workspace/app
-    - name: versionTag
+    - name: version
       description: The tag name of the image
       default: latest
   outputs:
@@ -29,5 +29,6 @@ spec:
     - /kaniko/executor
     args:
     - --dockerfile=${inputs.params.pathToDockerFile}
-    - --destination=${outputs.resources.builtImage.url}:${inputs.params.versionTag}
+    - --destination=${outputs.resources.builtImage.url}:v${inputs.params.version}
     - --context=${inputs.params.pathToContext}
+    - --build-arg=VERSION=${inputs.params.version}
