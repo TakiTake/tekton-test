@@ -17,7 +17,7 @@ metadata:
 spec:
   serviceAccount: deploy-bot
   taskRef:
-    name: deploy
+    name: deploy-to-k8s
   trigger:
     type: manual
   inputs:

@@ -32,9 +32,12 @@ spec:
     type: manual
   inputs:
     resources:
-    - name: app
+    - name: app-src
       resourceRef:
         name: hello-world-src
+    params:
+    - name: version
+      value: '1.0.0'
   outputs:
     resources:
     - name: builtImage

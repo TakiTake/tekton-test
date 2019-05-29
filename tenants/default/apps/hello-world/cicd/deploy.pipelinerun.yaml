@@ -40,6 +40,8 @@ spec:
   serviceAccount: deploy-bot
   pipelineRef:
     name: deploy
+  trigger:
+    type: manual
   params:
   - name: tenant
     value: default
@@ -47,6 +49,8 @@ spec:
     value: hello-world
   - name: env
     value: dev
+  - name: version
+    value: '1.0.0'
   resources:
   - name: app-src
     resourceRef:
