@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: basic-user-pass
+  annotations:
+    tekton.dev/docker-0: https://index.docker.io/v1/
+type: kubernetes.io/basic-auth
+stringData:
+  username: <username>
+  password: <password>
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: deploy-bot
+secrets:
+  - name: basic-user-pass
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tekton-pipeline-admin-rolebinding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: deploy-bot
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: tekton-pipelines-admin
+  apiGroup: rbac.authorization.k8s.io

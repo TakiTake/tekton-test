@@ -1,0 +1,34 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: deploy-to-k8s
+spec:
+  inputs:
+    resources:
+    - name: manifests
+      type: git
+    params:
+    - name: tenant
+      description: The tenant name
+      default: default
+    - name: app
+      description: The APP name
+    - name: env
+      description: The APP environment
+  steps:
+  - name: kustomize
+    image: takitake/kustomize:v2.0.3
+    command: ['kustomize']
+    args:
+      - 'build'
+      - '/workspace/manifests/tenants/${inputs.params.tenant}/apps/${inputs.params.app}/k8s/overlays/${inputs.params.env}'
+      - '--output'
+      - '/workspace/manifest.yaml'
+  - name: kubectl-appy
+    image: takitake/kubectl:v1.13.3
+    command: ['kubectl']
+    args:
+      - 'apply'
+      - '--filename'
+      - '/workspace/manifest.yaml'
+

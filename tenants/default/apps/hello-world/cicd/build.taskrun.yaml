@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: hello-world-src
+spec:
+  type: git
+  params:
+  - name: revision
+    value: master
+  - name: url
+    value: https://github.com/TakiTake/hello-world-go.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: hello-world-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: takitake/hello-world-go
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: build-push-hello-world
+spec:
+  serviceAccount: deploy-bot
+  taskRef:
+    name: build-push-with-kaniko
+  trigger:
+    type: manual
+  inputs:
+    resources:
+    - name: app-src
+      resourceRef:
+        name: hello-world-src
+    params:
+    - name: version
+      value: '1.0.0'
+  outputs:
+    resources:
+    - name: builtImage
+      resourceRef:
+        name: hello-world-image
