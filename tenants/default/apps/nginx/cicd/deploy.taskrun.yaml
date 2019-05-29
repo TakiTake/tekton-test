@@ -8,12 +8,12 @@ spec:
   - name: url
     value: https://github.com/TakiTake/tekton-test.git
   - name: revision
-    value: feature/pipeline
+    value: master
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
-  name: deploy-hello-world
+  name: deploy-nginx
 spec:
   serviceAccount: deploy-bot
   taskRef:
@@ -29,6 +29,6 @@ spec:
     - name: tenant
       value: default
     - name: app
-      value: hello-world
+      value: nginx
     - name: env
       value: dev
