@@ -5,6 +5,11 @@ TENANT_NAME = default
 install-tekton:
 	kubectl apply -f https://github.com/tektoncd/pipeline/releases/download/$(TEKTON_PIPELINE_VERSION)/release.yaml
 
+.PHONY: create-common-pipeliens
+create-common-pipelines:
+	find common -name '*.task.yaml' -exec kubectl apply -f {} \;
+	find common -name '*.pipeline.yaml' -exec kubectl apply -f {} \;
+
 .PHONY: create-tenant
 create-tenant:
 	mkdir ../tenants/$(TENANT_NAME)
