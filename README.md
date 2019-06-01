@@ -1,6 +1,6 @@
 # tekton-test
 
-I confirmed these pipelines with Tekton v0.3.1.
+I confirmed these pipelines with Tekton v0.4.0.
 
 I plan to follow future specification changes as much as possible.
 

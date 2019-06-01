@@ -40,8 +40,6 @@ spec:
   serviceAccount: deploy-bot
   pipelineRef:
     name: deploy
-  trigger:
-    type: manual
   params:
   - name: tenant
     value: default

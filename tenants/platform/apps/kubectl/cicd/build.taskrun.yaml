@@ -28,8 +28,6 @@ spec:
   serviceAccount: deploy-bot
   taskRef:
     name: build-push-with-kaniko
-  trigger:
-    type: manual
   inputs:
     resources:
     - name: app
