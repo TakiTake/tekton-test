@@ -17,3 +17,10 @@ spec:
       containers:
       - image: nginx:1.15.12-alpine
         name: nginx
+        resources:
+          limits:
+            cpu: 500m
+            memory: 10Mi
+          requests:
+            cpu: 500m
+            memory: 50Mi
