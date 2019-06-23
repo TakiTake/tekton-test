@@ -30,7 +30,7 @@ spec:
   - name: url
     value: https://github.com/TakiTake/tekton-test.git
   - name: revision
-    value: feature/pipeline
+    value: master
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
@@ -41,19 +41,19 @@ spec:
   pipelineRef:
     name: deploy
   params:
-  - name: tenant
+  - name: tenantName
     value: default
-  - name: app
+  - name: appName
     value: hello-world
-  - name: env
+  - name: appEnv
     value: dev
   - name: version
     value: '1.0.0'
   resources:
-  - name: app-src
+  - name: appSrc
     resourceRef:
       name: hello-world-src
-  - name: app-image
+  - name: appImage
     resourceRef:
       name: hello-world-image
   - name: manifests

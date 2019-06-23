@@ -4,14 +4,14 @@ metadata:
   name: deploy
 spec:
   params:
-  - name: tenant
-  - name: app
-  - name: env
+  - name: tenantName
+  - name: appName
+  - name: appEnv
   - name: version
   resources:
-  - name: app-src
+  - name: appSrc
     type: git
-  - name: app-image
+  - name: appImage
     type: image
   - name: manifests
     type: git
@@ -21,11 +21,11 @@ spec:
       name: build-push-with-kaniko
     resources:
       inputs:
-      - name: app-src
-        resource: app-src
+      - name: appSrc
+        resource: appSrc
       outputs:
       - name: builtImage
-        resource: app-image
+        resource: appImage
     params:
     - name: version
       value: "${params.version}"
@@ -38,10 +38,12 @@ spec:
       inputs:
       - name: manifests
         resource: manifests
+      - name: builtImage
+        resource: appImage
     params:
-    - name: tenant
-      value: "${params.tenant}"
-    - name: app
-      value: "${params.app}"
-    - name: env
-      value: "${params.env}"
+    - name: tenantName
+      value: "${params.tenantName}"
+    - name: appName
+      value: "${params.appName"
+    - name: appEnv
+      value: "${params.appEnv}"

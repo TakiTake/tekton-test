@@ -7,28 +7,34 @@ spec:
     resources:
     - name: manifests
       type: git
+    - name: builtImage
+      type: image
     params:
-    - name: tenant
+    - name: tenantName
       description: The tenant name
       default: default
-    - name: app
+    - name: appName
       description: The APP name
-    - name: env
+    - name: appEnv
       description: The APP environment
   steps:
   - name: kustomize
     image: takitake/kustomize:v2.0.3
-    command: ['kustomize']
+    command:
+    - /bin/sh
     args:
-      - 'build'
-      - '/workspace/manifests/tenants/${inputs.params.tenant}/apps/${inputs.params.app}/k8s/overlays/${inputs.params.env}'
-      - '--output'
-      - '/workspace/manifest.yaml'
+    - -ce
+    - |
+      set -e
+      set -x
+      cd /workspace/manifests/tenants/${inputs.params.tenantName}/apps/${inputs.params.appName}/k8s/overlays/${inputs.params.appEnv}
+      kustomize edit set image ${inputs.params.appName}=${inputs.resources.builtImage.url}
+      kustomize build --output /workspace/manifest.yaml
   - name: kubectl-appy
     image: takitake/kubectl:v1.13.3
-    command: ['kubectl']
+    command:
+    -  kubectl
     args:
-      - 'apply'
-      - '--filename'
-      - '/workspace/manifest.yaml'
-
+    - apply
+    - --filename
+    - /workspace/manifest.yaml
