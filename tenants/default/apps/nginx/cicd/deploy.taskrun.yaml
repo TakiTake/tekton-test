@@ -11,6 +11,16 @@ spec:
     value: master
 ---
 apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: nginx-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: nginx:1.17.0-alpine
+---
+apiVersion: tekton.dev/v1alpha1
 kind: TaskRun
 metadata:
   name: deploy-nginx
@@ -23,10 +33,13 @@ spec:
     - name: manifests
       resourceRef:
         name: tekton-test
+    - name: builtImage
+      resourceRef:
+        name: nginx-image
     params:
-    - name: tenant
+    - name: tenantName
       value: default
-    - name: app
+    - name: appName
       value: nginx
-    - name: env
+    - name: appEnv
       value: dev

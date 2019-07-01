@@ -30,16 +30,16 @@ spec:
     name: build-push-with-kaniko
   inputs:
     resources:
-    - name: app
+    - name: appSrc
       resourceRef:
         name: kubectl-src
     params:
     - name: version
       value: '1.13.3'
     - name: pathToDockerFile
-      value: /workspace/app/kubectl/Dockerfile
+      value: /workspace/appSrc/kubectl/Dockerfile
     - name: pathToContext
-      value: /workspace/app/kubectl
+      value: /workspace/appSrc/kubectl
   outputs:
     resources:
     - name: builtImage

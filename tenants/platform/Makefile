@@ -16,5 +16,7 @@ create-common-pipelines:
 
 .PHONY: create-tenant
 create-tenant:
-	mkdir ../tenants/$(TENANT_NAME)
+	mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+	current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+	mkdir -p $(current_dir)/../tenants/$(TENANT_NAME)
 	kubectl create namespace $(TENANT_NAME)

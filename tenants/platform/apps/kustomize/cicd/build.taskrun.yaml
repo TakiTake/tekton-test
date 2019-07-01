@@ -30,16 +30,16 @@ spec:
     name: build-push-with-kaniko
   inputs:
     resources:
-    - name: app
+    - name: appSrc
       resourceRef:
         name: kustomize-src
     params:
     - name: version
       value: '2.0.3'
     - name: pathToDockerFile
-      value: /workspace/app/kustomize/Dockerfile
+      value: /workspace/appSrc/kustomize/Dockerfile
     - name: pathToContext
-      value: /workspace/app/kustomize
+      value: /workspace/appSrc/kustomize
   outputs:
     resources:
     - name: builtImage
