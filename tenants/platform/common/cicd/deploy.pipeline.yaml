@@ -40,10 +40,11 @@ spec:
         resource: manifests
       - name: builtImage
         resource: appImage
+        from: [build-push-with-kaniko]
     params:
     - name: tenantName
       value: "${params.tenantName}"
     - name: appName
-      value: "${params.appName"
+      value: "${params.appName}"
     - name: appEnv
       value: "${params.appEnv}"

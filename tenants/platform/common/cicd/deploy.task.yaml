@@ -23,12 +23,12 @@ spec:
     command:
     - /bin/sh
     args:
-    - -ce
+    - -c
     - |
       set -e
       set -x
       cd /workspace/manifests/tenants/${inputs.params.tenantName}/apps/${inputs.params.appName}/k8s/overlays/${inputs.params.appEnv}
-      kustomize edit set image ${inputs.params.appName}=${inputs.resources.builtImage.url}
+      kustomize edit set image ${inputs.params.appName}=${inputs.resources.builtImage.url}@${inputs.resources.builtImage.digest}
       kustomize build --output /workspace/manifest.yaml
   - name: kubectl-appy
     image: takitake/kubectl:v1.13.3
